@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMIS Conference Registration</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+
+        /* Matrix effect background */
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .matrix canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: rgba(26, 26, 26, 0.85);
+            border-radius: 8px;
+            border: 2px solid #500000;
+            box-shadow: 0 0 15px rgba(80, 0, 0, 0.5);
+            z-index: 1;
+            position: relative;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Anime girl image styling */
+        .anime-girl {
+            position: absolute;
+            right: 10%;
+            bottom: 0;
+            width: 200px;
+            opacity: 0.9;
+            z-index: 0;
+        }
+
+        h1 {
+            color: #ff8080;
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px #ff8080, 0 0 10px #ff0000;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #ff8080;
+            text-shadow: 0 0 3px #ff4040;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            background-color: #333;
+            color: #ffcccc;
+            border: 1px solid #500000;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 0 5px #500000 inset;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-btn {
+            background-color: #750000;
+            color: #ffffff;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-transform: uppercase;
+            box-shadow: 0 0 8px #750000, 0 0 12px #ff0000;
+        }
+
+        .submit-btn:hover {
+            background-color: #ff0000;
+            box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix">
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+
+    <div class="container">
+        <h1>CMIS Conference Registration</h1>
+        <form id="registrationForm">
+            <!-- Form fields go here (same as previously coded) -->
+            <label for="title">Title</label>
+            <select id="title" name="title" required>
+                <option value="">Select a title</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Prof.">Prof.</option>
+            </select>
+
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" required>
+
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="dietary_restrictions">Dietary Restrictions</label>
+            <select id="dietary_restrictions" name="dietary_restrictions" required>
+                <option value="">Select</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Gluten Intolerance">Gluten Intolerance</option>
+                <option value="Other">Other (please specify)</option>
+            </select>
+            <textarea id="other_dietary" name="other_dietary" placeholder="If 'Other,' please specify here..."></textarea>
+
+            <label for="emergency_contact">Emergency Contact and Phone Number</label>
+            <textarea id="emergency_contact" name="emergency_contact" required></textarea>
+
+            <label for="special_accommodation">Special Accommodations</label>
+            <textarea id="special_accommodation" name="special_accommodation" placeholder="Please specify any necessary accommodations..."></textarea>
+
+            <button type="submit" class="submit-btn">Submit Registration</button>
+        </form>
+    </div>
+
+    <!-- Adding the anime girl image -->
+    <img src="PATH_TO_YOUR_ANIME_IMAGE.png" alt="90s Anime Girl" class="anime-girl">
+
+    <script>
+        // Matrix effect script
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array.from({ length: columns }).fill(0);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#750000";
+            ctx.font = `${fontSize}px monospace`;
+
+            drops.forEach((y, index) => {
+                const text = characters[Math.floor(Math.random() * characters.length)];
+                ctx.fillText(text, index * fontSize, y * fontSize);
+                drops[index] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+            });
+        }
+
+        setInterval(drawMatrix, 50);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
