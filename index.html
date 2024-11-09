@@ -202,6 +202,12 @@
 
     <div id="successMessage">Registration submitted successfully!</div>
 
+    <!-- Embed Giphy GIFs with positions and animations -->
+    <iframe src="https://giphy.com/embed/2e6XWAxWE7289RfnAr" class="giphy-embed gif1" frameborder="0" allowfullscreen></iframe>
+    <iframe src="https://giphy.com/embed/2uw4pRauXH8GBjBE1P" class="giphy-embed gif2" frameborder="0" allowfullscreen></iframe>
+    <iframe src="https://giphy.com/embed/SlKBbQNNZNfcPRWYW7" class="giphy-embed gif3" frameborder="0" allowfullscreen></iframe>
+    <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
+
     <script>
         // Matrix effect script
         const canvas = document.getElementById('matrixCanvas');
@@ -234,7 +240,7 @@
             canvas.height = window.innerHeight;
         });
 
-        // Toggle display of "Other Dietary Restrictions" textarea
+        // Show "Other Dietary Restrictions" textarea only when "Other" is selected
         function toggleOtherDietary() {
             const dietaryRestrictions = document.getElementById('dietary_restrictions');
             const otherDietary = document.getElementById('other_dietary');
@@ -253,7 +259,7 @@
             const form = document.getElementById('registrationForm');
             const formData = new FormData(form);
 
-            fetch('https://script.google.com/macros/s/AKfycbzBqoh1Y8o-xEFiU_Z2UKm81OWALRowsycUK3ZWq2EVs6w2I6Ops5cCmwt90ZXdSW9PLg/exec', {
+            fetch('https://script.google.com/macros/s/AKfycbwImpXlqmExjDQY_S6hBQdan9jQib3LL62Q9vnNimsMpgUHaIq97JGqAMv90saM-Xy_/exec', {
                 method: 'POST',
                 body: formData
             })
