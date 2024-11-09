@@ -153,7 +153,7 @@
 
     <div class="container">
         <h1>CMIS Conference Registration</h1>
-        <form id="registrationForm" action="https://script.google.com/macros/s/AKfycbzBqoh1Y8o-xEFiU_Z2UKm81OWALRowsycUK3ZWq2EVs6w2I6Ops5cCmwt90ZXdSW9PLg/exec" method="POST" target="_self">
+        <form id="registrationForm">
             <label for="title">Title</label>
             <select id="title" name="title" required>
                 <option value="">Select a title</option>
@@ -196,7 +196,7 @@
             <label for="special_accommodation">Special Accommodations</label>
             <textarea id="special_accommodation" name="special_accommodation" placeholder="Please specify any necessary accommodations..."></textarea>
 
-            <button type="submit" class="submit-btn" onclick="showSuccessMessage(event)">Submit Registration</button>
+            <button type="button" class="submit-btn" onclick="submitForm()">Submit Registration</button>
         </form>
     </div>
 
@@ -234,20 +234,36 @@
             canvas.height = window.innerHeight;
         });
 
+        // Toggle display of "Other Dietary Restrictions" textarea
+        function toggleOtherDietary() {
+            const dietaryRestrictions = document.getElementById('dietary_restrictions');
+            const otherDietary = document.getElementById('other_dietary');
+            otherDietary.style.display = dietaryRestrictions.value === 'Other' ? 'block' : 'none';
+        }
+
         // Show flashing success message
-        function showSuccessMessage(event) {
-            event.preventDefault();
-            document.getElementById('registrationForm').submit();
+        function showSuccessMessage() {
             const successMessage = document.getElementById('successMessage');
             successMessage.style.display = 'block';
             setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
         }
 
-        // Show "Other Dietary Restrictions" textarea only when "Other" is selected
-        function toggleOtherDietary() {
-            const dietaryRestrictions = document.getElementById('dietary_restrictions');
-            const otherDietary = document.getElementById('other_dietary');
-            otherDietary.style.display = dietaryRestrictions.value === 'Other' ? 'block' : 'none';
+        // Submit the form data to Google Apps Script
+        function submitForm() {
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+
+            fetch('https://script.google.com/macros/s/AKfycbzBqoh1Y8o-xEFiU_Z2UKm81OWALRowsycUK3ZWq2EVs6w2I6Ops5cCmwt90ZXdSW9PLg/exec', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log("Response:", text);
+                showSuccessMessage();
+                form.reset();  // Reset form fields
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
