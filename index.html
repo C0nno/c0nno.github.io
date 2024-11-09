@@ -125,6 +125,25 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0); }
         }
+
+        /* Success message styling */
+        #successMessage {
+            display: none;
+            color: #fff;
+            background-color: #500000;
+            padding: 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ff0000;
+            animation: flash 1s infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
@@ -134,7 +153,7 @@
 
     <div class="container">
         <h1>CMIS Conference Registration</h1>
-        <form id="registrationForm" action="https://script.google.com/macros/s/AKfycbwImpXlqmExjDQY_S6hBQdan9jQib3LL62Q9vnNimsMpgUHaIq97JGqAMv90saM-Xy_/exec" method="POST" target="_blank">
+        <form id="registrationForm" action="https://script.google.com/macros/s/AKfycbzBqoh1Y8o-xEFiU_Z2UKm81OWALRowsycUK3ZWq2EVs6w2I6Ops5cCmwt90ZXdSW9PLg/exec" method="POST" target="_self">
             <label for="title">Title</label>
             <select id="title" name="title" required>
                 <option value="">Select a title</option>
@@ -150,6 +169,9 @@
             <label for="last_name">Last Name</label>
             <input type="text" id="last_name" name="last_name" required>
 
+            <label for="organization">Organization</label>
+            <input type="text" id="organization" name="organization" required>
+
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
 
@@ -157,29 +179,28 @@
             <input type="tel" id="phone" name="phone" required>
 
             <label for="dietary_restrictions">Dietary Restrictions</label>
-            <select id="dietary_restrictions" name="dietary_restrictions" required>
+            <select id="dietary_restrictions" name="dietary_restrictions" required onchange="toggleOtherDietary()">
                 <option value="">Select</option>
                 <option value="Vegan">Vegan</option>
                 <option value="Gluten Intolerance">Gluten Intolerance</option>
                 <option value="Other">Other (please specify)</option>
             </select>
-            <textarea id="other_dietary" name="other_dietary" placeholder="If 'Other,' please specify here..."></textarea>
+            <textarea id="other_dietary" name="other_dietary" placeholder="If 'Other,' please specify here..." style="display: none;"></textarea>
 
-            <label for="emergency_contact">Emergency Contact and Phone Number</label>
-            <textarea id="emergency_contact" name="emergency_contact" required></textarea>
+            <label for="emergency_contact_name">Emergency Contact Name</label>
+            <input type="text" id="emergency_contact_name" name="emergency_contact_name" required>
+
+            <label for="emergency_contact_phone">Emergency Contact Phone Number</label>
+            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" required>
 
             <label for="special_accommodation">Special Accommodations</label>
             <textarea id="special_accommodation" name="special_accommodation" placeholder="Please specify any necessary accommodations..."></textarea>
 
-            <button type="submit" class="submit-btn">Submit Registration</button>
+            <button type="submit" class="submit-btn" onclick="showSuccessMessage(event)">Submit Registration</button>
         </form>
     </div>
 
-    <!-- Embed Giphy GIFs with positions and animations -->
-    <iframe src="https://giphy.com/embed/2e6XWAxWE7289RfnAr" class="giphy-embed gif1" frameborder="0" allowfullscreen></iframe>
-    <iframe src="https://giphy.com/embed/2uw4pRauXH8GBjBE1P" class="giphy-embed gif2" frameborder="0" allowfullscreen></iframe>
-    <iframe src="https://giphy.com/embed/SlKBbQNNZNfcPRWYW7" class="giphy-embed gif3" frameborder="0" allowfullscreen></iframe>
-    <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
+    <div id="successMessage">Registration submitted successfully!</div>
 
     <script>
         // Matrix effect script
@@ -212,6 +233,22 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        // Show flashing success message
+        function showSuccessMessage(event) {
+            event.preventDefault();
+            document.getElementById('registrationForm').submit();
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
+        }
+
+        // Show "Other Dietary Restrictions" textarea only when "Other" is selected
+        function toggleOtherDietary() {
+            const dietaryRestrictions = document.getElementById('dietary_restrictions');
+            const otherDietary = document.getElementById('other_dietary');
+            otherDietary.style.display = dietaryRestrictions.value === 'Other' ? 'block' : 'none';
+        }
     </script>
 </body>
 </html>
