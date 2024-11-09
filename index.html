@@ -213,7 +213,7 @@
             canvas.height = window.innerHeight;
         });
     </script>
-    <script>
+<script>
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
         e.preventDefault();  // Prevent default form submission
 
@@ -229,13 +229,22 @@
             special_accommodation: document.getElementById('special_accommodation').value
         };
 
-        fetch('https://script.google.com/macros/s/AKfycbxuVv3FR8SVk84IpPVpoFCM-A2nMORhO1MHUU-UL5vrUr-uVu_Vrf4MQbaroNA8pz0/exec', {
+        console.log("Form Data:", formData);
+
+        fetch('https://script.google.com/macros/s/AKfycbxuVv3FR8SVk84IpPVpoFCM-A2nMORhO1MHUU-UL5vrUr-uVu_Vrf4MQbaroNA8pz0/exec, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(formData)
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log("Response Status:", response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log("Response Data:", data);
             if (data.status === 'success') {
                 alert('Registration submitted successfully!');
                 document.getElementById('registrationForm').reset();
