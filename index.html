@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMIS Conference Registration</title>
     <style>
-        /* Basic reset */
+        /* Reset and basic styles */
         * {
             margin: 0;
             padding: 0;
@@ -15,8 +15,8 @@
         body {
             font-family: 'Courier New', monospace;
             color: #fff;
-            overflow: hidden;
             background-color: #1a1a1a;
+            overflow-y: scroll; /* Enables vertical scrolling */
         }
 
         /* Matrix effect background */
@@ -42,7 +42,7 @@
         /* Main container */
         .container {
             max-width: 600px;
-            margin: 80px auto;
+            margin: 100px auto;
             padding: 30px;
             background-color: rgba(26, 26, 26, 0.85);
             border-radius: 8px;
@@ -51,16 +51,6 @@
             z-index: 1;
             position: relative;
             backdrop-filter: blur(4px);
-        }
-
-        /* Anime girl image styling */
-        .anime-girl {
-            position: absolute;
-            right: 10%;
-            bottom: 0;
-            width: 200px;
-            opacity: 0.9;
-            z-index: 0;
         }
 
         h1 {
@@ -122,6 +112,23 @@
             background-color: #ff0000;
             box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000;
         }
+
+        /* Dancing AI Matrix GIFs */
+        .gif-wrapper {
+            position: fixed;
+            animation: dance 5s infinite alternate;
+        }
+
+        .gif1 { top: 10%; left: 5%; width: 80px; }
+        .gif2 { top: 25%; right: 10%; width: 100px; }
+        .gif3 { bottom: 15%; left: 20%; width: 120px; }
+        .gif4 { bottom: 10%; right: 5%; width: 90px; }
+
+        /* Dancing effect */
+        @keyframes dance {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
@@ -173,8 +180,11 @@
         </form>
     </div>
 
-    <!-- Adding the anime girl image -->
-    <img src="PATH_TO_YOUR_ANIME_IMAGE.png" alt="90s Anime Girl" class="anime-girl">
+    <!-- Adding GIFs -->
+    <img src="PATH_TO_YOUR_GIF_1.gif" alt="AI Matrix GIF" class="gif-wrapper gif1">
+    <img src="PATH_TO_YOUR_GIF_2.gif" alt="AI Matrix GIF" class="gif-wrapper gif2">
+    <img src="PATH_TO_YOUR_GIF_3.gif" alt="AI Matrix GIF" class="gif-wrapper gif3">
+    <img src="PATH_TO_YOUR_GIF_4.gif" alt="AI Matrix GIF" class="gif-wrapper gif4">
 
     <script>
         // Matrix effect script
