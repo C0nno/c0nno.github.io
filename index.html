@@ -241,62 +241,6 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
-  <script src="lib:/all/libopenmpt.js"></script>
 
-    <!-- JavaScript to Play .XM Music Playlist -->
-    <script>
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        let player;
-        let currentIndex = 0;
-
-        // Define your playlist - an array of paths to your .xm files
-        const playlist = [
-            'Fearofdark - Get A Brain Morans.xm',   // Replace with actual file paths
-            'Funky Fish - R2-D2.xm',
-            'music/track3.xm'
-            'Funky Fish and raina - artificial sweetener.xm'
-            'Ghidorah - Good night Mr. Pung.xm'
-            'HyoChan - sleepy sunflower.xm'
-            'Jakim - Valium candies.xm'
-            'falcon - spineless_.xm'
-            'gusse & keyg & loonie - synergetic.xm'
-
-            // Add more tracks as needed
-        ];
-
-        async function loadAndPlayXMFile(url) {
-            if (player) {
-                player.delete();  // Cleanup previous player instance
-            }
-
-            const response = await fetch(url);
-            const arrayBuffer = await response.arrayBuffer();
-            player = new Module.OpenMPTModule(arrayBuffer);
-
-            const scriptNode = audioContext.createScriptProcessor(4096, 0, 2);
-            scriptNode.onaudioprocess = function(event) {
-                const leftChannel = event.outputBuffer.getChannelData(0);
-                const rightChannel = event.outputBuffer.getChannelData(1);
-                const ended = !player.render(leftChannel, rightChannel, 4096);
-
-                if (ended) {
-                    playNextTrack();  // Move to the next track when the current one ends
-                }
-            };
-
-            scriptNode.connect(audioContext.destination);
-            player.setRepeatCount(0);  // No internal looping; we'll control the playlist
-        }
-
-        function playNextTrack() {
-            currentIndex = (currentIndex + 1) % playlist.length;  // Loop back to start when reaching the end
-            loadAndPlayXMFile(playlist[currentIndex]);
-        }
-
-        // Initialize libopenmpt and start playing the first track
-        Module.onRuntimeInitialized = function() {
-            loadAndPlayXMFile(playlist[currentIndex]);
-        };
-    </script>
 </body>
 </html>
