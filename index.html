@@ -180,7 +180,62 @@
     <iframe src="https://giphy.com/embed/2uw4pRauXH8GBjBE1P" class="giphy-embed gif2" frameborder="0" allowfullscreen></iframe>
     <iframe src="https://giphy.com/embed/SlKBbQNNZNfcPRWYW7" class="giphy-embed gif3" frameborder="0" allowfullscreen></iframe>
     <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
+    <script src="lib:/all/libopenmpt.js"></script>
 
+    <!-- JavaScript to Play .XM Music Playlist -->
+    <script>
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let player;
+        let currentIndex = 0;
+
+        // Define your playlist - an array of paths to your .xm files
+        const playlist = [
+            'music/Fearofdark_Get_A_Brain_Morans.xm',
+            'music/Funky_Fish_R2-D2.xm',
+            'music/Funky_Fish_Artificial_Sweetener.xm',
+            'music/Ghidorah_Good_Night_Mr_Pung.xm',
+            'music/HyoChan_Sleepy_Sunflower.xm',
+            'music/Jakim_Valium_Candies.xm',
+            'music/Falcon_Spineless_.xm',
+            'music/Gusse_Keyg_Loonie_Synergetic.xm'
+            'music/one.xm'
+        ];
+
+        async function loadAndPlayXMFile(url) {
+            if (player) {
+                player.delete();  // Cleanup previous player instance
+            }
+
+            const response = await fetch(url);
+            const arrayBuffer = await response.arrayBuffer();
+            player = new Module.OpenMPTModule(arrayBuffer);
+
+            const scriptNode = audioContext.createScriptProcessor(4096, 0, 2);
+            scriptNode.onaudioprocess = function(event) {
+                const leftChannel = event.outputBuffer.getChannelData(0);
+                const rightChannel = event.outputBuffer.getChannelData(1);
+                const ended = !player.render(leftChannel, rightChannel, 4096);
+
+                if (ended) {
+                    playNextTrack();  // Move to the next track when the current one ends
+                }
+            };
+
+            scriptNode.connect(audioContext.destination);
+            player.setRepeatCount(0);  // No internal looping; we'll control the playlist
+        }
+
+        function playNextTrack() {
+            currentIndex = (currentIndex + 1) % playlist.length;  // Loop back to start when reaching the end
+            loadAndPlayXMFile(playlist[currentIndex]);
+        }
+
+        // Initialize libopenmpt and start playing the first track
+        Module.onRuntimeInitialized = function() {
+            loadAndPlayXMFile(playlist[currentIndex]);
+        };
+    </script>
+    
     <script>
         // Matrix effect script
         const canvas = document.getElementById('matrixCanvas');
