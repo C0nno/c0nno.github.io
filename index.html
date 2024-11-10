@@ -184,61 +184,44 @@
     <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
 
     <!-- JavaScript to Play .XM Music Playlist -->
-<script src="lib:/js/libopenmpt.js"></script>
-<script>
-    let audioContext, player;
-    let currentIndex = 0;
+     <script src="lib:/xm-player/binary-file-reader.js"></script>
+    <script src="lib:/xm-player/xm.js"></script>
+    <script src="lib:/xm-player/xm-player.js"></script>
+     <script>
+        const playlist = [
+            'music/Fearofdark_Get_A_Brain_Morans.xm',
+            'music/Funky_Fish_R2-D2.xm',
+            'music/Funky_Fish_Artificial_Sweetener.xm',
+            'music/Ghidorah_Good_Night_Mr_Pung.xm',
+            'music/HyoChan_Sleepy_Sunflower.xm',
+            'music/Jakim_Valium_Candies.xm',
+            'music/Falcon_Spineless_.xm',
+            'music/Gusse_Keyg_Loonie_Synergetic.xm',
+            'music/one.xm'
+        ];
 
-    const playlist = [
-        'music/Fearofdark_Get_A_Brain_Morans.xm',
-        'music/Funky_Fish_R2-D2.xm',
-        'music/Funky_Fish_Artificial_Sweetener.xm',
-        'music/Ghidorah_Good_Night_Mr_Pung.xm',
-        'music/HyoChan_Sleepy_Sunflower.xm',
-        'music/Jakim_Valium_Candies.xm',
-        'music/Falcon_Spineless_.xm',
-        'music/Gusse_Keyg_Loonie_Synergetic.xm',
-        'music/one.xm'
-    ];
+        let currentTrackIndex = 0;
+        let xmPlayer = new XMPlayer();
 
-    function playNextTrack() {
-        currentIndex = (currentIndex + 1) % playlist.length;
-        loadAndPlayXMFile(playlist[currentIndex]);
-    }
-
-    async function loadAndPlayXMFile(url) {
-        if (player) player.delete();
-
-        const response = await fetch(url);
-        const arrayBuffer = await response.arrayBuffer();
-        player = new Module.OpenMPTModule(arrayBuffer);
-
-        const scriptNode = audioContext.createScriptProcessor(4096, 0, 2);
-        scriptNode.onaudioprocess = function(event) {
-            const leftChannel = event.outputBuffer.getChannelData(0);
-            const rightChannel = event.outputBuffer.getChannelData(1);
-            const ended = !player.render(leftChannel, rightChannel, 4096);
-
-            if (ended) playNextTrack();
-        };
-
-        scriptNode.connect(audioContext.destination);
-        player.setRepeatCount(0);
-    }
-
-    function startMusic() {
-        if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume(); // Only attempt to resume if audioContext is defined
+        // Function to load and play the current track in the playlist
+        async function playCurrentTrack() {
+            const trackUrl = playlist[currentTrackIndex];
+            const response = await fetch(trackUrl);
+            const arrayBuffer = await response.arrayBuffer();
+            xmPlayer.stop(); // Stop any currently playing track
+            xmPlayer.load(arrayBuffer); // Load the new track
+            xmPlayer.play(); // Play the track
         }
-        loadAndPlayXMFile(playlist[currentIndex]);
-    }
 
-    // Initialize OpenMPT Module after libopenmpt.js is fully loaded
-    Module.onRuntimeInitialized = function() {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)(); // Initialize audioContext here
-        document.querySelector("button[onclick='startMusic()']").disabled = false; // Enable the Play Music button
-    };
-</script>
+        // Start music when called
+        function startMusic() {
+            xmPlayer.on(XMPlayer.Event.ended, () => {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length; // Loop to the next track
+                playCurrentTrack();
+            });
+            playCurrentTrack();
+        }
+    </script>
     
     <script>
         // Matrix effect script
