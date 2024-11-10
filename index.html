@@ -122,11 +122,36 @@
     </style>
 </head>
 <body>
-        <audio autoplay loop>
-        <source src="music/cook.mp3" type="audio/mpeg">
-        <source src="cook.ogg" type="audio/ogg">
-        <!-- Add more sources if needed for compatibility -->
-    </audio>
+<audio autoplay loop muted id="backgroundMusic" playsinline>
+    <source src="music/cook.mp3" type="audio/mpeg">
+    <source src="cook.ogg" type="audio/ogg">
+    <!-- Add more sources if needed for compatibility -->
+</audio>
+
+<!-- Optional Play Button (hidden) -->
+<button id="playMusic" style="display: none;">Play Music</button>
+
+<script>
+    // Check if the audio can autoplay
+    document.addEventListener('DOMContentLoaded', () => {
+        const audio = document.getElementById('backgroundMusic');
+        const playButton = document.getElementById('playMusic');
+
+        audio.muted = false; // Attempt to unmute once loaded
+
+        // If autoplay fails, show play button
+        audio.play().catch(() => {
+            playButton.style.display = 'block'; // Show hidden play button
+        });
+
+        // Play button to manually start music
+        playButton.addEventListener('click', () => {
+            audio.play();
+            playButton.style.display = 'none';
+        });
+    });
+</script>
+
     <canvas id="matrixCanvas"></canvas>
     <div class="container">
         <h1>CMIS Conference Registration</h1>
