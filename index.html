@@ -184,10 +184,11 @@
     <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
 
     <!-- JavaScript to Play .XM Music Playlist -->
-    <script src="lib:/all/libopenmpt.js"></script>
+<script src="lib:/js/libopenmpt.js"></script>
 <script>
-    // JavaScript to Play .XM Music Playlist
-    let audioContext, player, currentIndex = 0;
+    let audioContext, player;
+    let currentIndex = 0;
+
     const playlist = [
         'music/Fearofdark_Get_A_Brain_Morans.xm',
         'music/Funky_Fish_R2-D2.xm',
@@ -226,15 +227,15 @@
     }
 
     function startMusic() {
-        if (audioContext.state === 'suspended') {
-            audioContext.resume();
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume(); // Only attempt to resume if audioContext is defined
         }
         loadAndPlayXMFile(playlist[currentIndex]);
     }
 
-    // Initialize OpenMPT Module after libopenmpt.js is loaded
+    // Initialize OpenMPT Module after libopenmpt.js is fully loaded
     Module.onRuntimeInitialized = function() {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext = new (window.AudioContext || window.webkitAudioContext)(); // Initialize audioContext here
         document.querySelector("button[onclick='startMusic()']").disabled = false; // Enable the Play Music button
     };
 </script>
