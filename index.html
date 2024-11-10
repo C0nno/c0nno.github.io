@@ -170,6 +170,8 @@
 
             <button type="button" class="submit-btn" onclick="submitForm()">Submit Registration</button>
         </form>
+                <button onclick="startMusic()">Play Music</button>
+
     </div>
 
     <!-- Success Message -->
@@ -180,7 +182,6 @@
     <iframe src="https://giphy.com/embed/2uw4pRauXH8GBjBE1P" class="giphy-embed gif2" frameborder="0" allowfullscreen></iframe>
     <iframe src="https://giphy.com/embed/SlKBbQNNZNfcPRWYW7" class="giphy-embed gif3" frameborder="0" allowfullscreen></iframe>
     <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
-    <script src="lib:/all/libopenmpt.js"></script>
 
     <!-- JavaScript to Play .XM Music Playlist -->
     <script src="lib:/all/libopenmpt.js"></script>
@@ -234,9 +235,9 @@
             loadAndPlayXMFile(playlist[currentIndex]);
         }
 
-        Module.onRuntimeInitialized = function() {
-            document.querySelector("button").disabled = false;  // Enable button after loading
-        };
+Module.onRuntimeInitialized = function() {
+    document.querySelector("button[onclick='startMusic()']").disabled = false;
+};
     </script>
     
     <script>
