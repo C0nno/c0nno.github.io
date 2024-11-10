@@ -122,6 +122,11 @@
     </style>
 </head>
 <body>
+        <audio autoplay loop>
+        <source src="music/cook.mp3" type="audio/mpeg">
+        <source src="cook.ogg" type="audio/ogg">
+        <!-- Add more sources if needed for compatibility -->
+    </audio>
     <canvas id="matrixCanvas"></canvas>
     <div class="container">
         <h1>CMIS Conference Registration</h1>
@@ -170,8 +175,6 @@
 
             <button type="button" class="submit-btn" onclick="submitForm()">Submit Registration</button>
         </form>
-                <button onclick="startMusic()">Play Music</button>
-
     </div>
 
     <!-- Success Message -->
@@ -183,45 +186,7 @@
     <iframe src="https://giphy.com/embed/SlKBbQNNZNfcPRWYW7" class="giphy-embed gif3" frameborder="0" allowfullscreen></iframe>
     <iframe src="https://giphy.com/embed/h1QmJxwoCr19BtTkGt" class="giphy-embed gif4" frameborder="0" allowfullscreen></iframe>
 
-    <!-- JavaScript to Play .XM Music Playlist -->
-     <script src="lib:/binary-file-reader.js"></script>
-    <script src="lib:/xm.js"></script>
-    <script src="lib:/xm-player.js"></script>
-     <script>
-        const playlist = [
-            'music/Fearofdark_Get_A_Brain_Morans.xm',
-            'music/Funky_Fish_R2-D2.xm',
-            'music/Funky_Fish_Artificial_Sweetener.xm',
-            'music/Ghidorah_Good_Night_Mr_Pung.xm',
-            'music/HyoChan_Sleepy_Sunflower.xm',
-            'music/Jakim_Valium_Candies.xm',
-            'music/Falcon_Spineless_.xm',
-            'music/Gusse_Keyg_Loonie_Synergetic.xm',
-            'music/one.xm'
-        ];
 
-        let currentTrackIndex = 0;
-        let xmPlayer = new XMPlayer();
-
-        // Function to load and play the current track in the playlist
-        async function playCurrentTrack() {
-            const trackUrl = playlist[currentTrackIndex];
-            const response = await fetch(trackUrl);
-            const arrayBuffer = await response.arrayBuffer();
-            xmPlayer.stop(); // Stop any currently playing track
-            xmPlayer.load(arrayBuffer); // Load the new track
-            xmPlayer.play(); // Play the track
-        }
-
-        // Start music when called
-        function startMusic() {
-            xmPlayer.on(XMPlayer.Event.ended, () => {
-                currentTrackIndex = (currentTrackIndex + 1) % playlist.length; // Loop to the next track
-                playCurrentTrack();
-            });
-            playCurrentTrack();
-        }
-    </script>
     
     <script>
         // Matrix effect script
