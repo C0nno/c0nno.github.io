@@ -150,7 +150,7 @@
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" name="phone" required>
 
-            <label for="dietary_restrictions">Dietary Restrictions</label>
+            <label for="dietary_restrictions">Dietary Restrictions (Leave blank if none)</label>
             <select id="dietary_restrictions" name="dietary_restrictions" required onchange="toggleOtherDietary()">
                 <option value="">Select</option>
                 <option value="Vegan">Vegan</option>
@@ -235,6 +235,7 @@
 
                 setTimeout(() => {
                     completeMessage.style.display = 'none';
+                    window.location.href = "/payment.html";  // Redirect to payment page
                 }, 3000);  // Hide the success message after 3 seconds
             })
             .catch(error => console.error('Error:', error));
