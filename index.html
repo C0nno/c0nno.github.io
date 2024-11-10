@@ -119,9 +119,53 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0); }
         }
+        /* Typing overlay styling */
+#typingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1000;
+}
+.typing-text {
+    white-space: pre;
+    overflow: hidden;
+    border-right: .15em solid #00ff00;
+    animation: typing 2s steps(20) 1s forwards, blink-caret 0.75s step-end infinite;
+}
+
+/* Typing animation */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+@keyframes blink-caret {
+    50% { border-color: transparent; }
+}
+
     </style>
 </head>
 <body>
+    <!-- Typing Overlay -->
+<div id="typingOverlay">
+    <div id="line1" class="typing-text">Wake up, Neo...</div>
+    <div id="line2" class="typing-text" style="display: none;">The Matrix has you...</div>
+    <div id="line3" class="typing-text" style="display: none;">Follow the white rabbit.</div>
+    <div id="line4" class="typing-text" style="display: none;">Knock, knock, Neo.</div>
+</div>
+
+<!-- Main registration content -->
+<div id="registrationPage" style="display: none;">
+
 <audio autoplay loop muted id="backgroundMusic" playsinline>
     <source src="music/cook.mp3" type="audio/mpeg">
     <source src="cook.ogg" type="audio/ogg">
@@ -291,6 +335,26 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
+    <script>
+    // Typing animation for the overlay
+    document.addEventListener('DOMContentLoaded', () => {
+        const delays = [0, 3000, 6000, 9000]; // Delays for each line
+        const lines = ['line1', 'line2', 'line3', 'line4'];
+
+        lines.forEach((lineId, index) => {
+            setTimeout(() => {
+                document.getElementById(lineId).style.display = 'block';
+            }, delays[index]);
+        });
+
+        // Hide the typing overlay and show the registration page after the last line
+        setTimeout(() => {
+            document.getElementById('typingOverlay').style.display = 'none';
+            document.getElementById('registrationPage').style.display = 'block';
+        }, delays[delays.length - 1] + 2000);
+    });
+</script>
+
 
 </body>
 </html>
