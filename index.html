@@ -233,34 +233,39 @@ label, input, select, textarea {
 
     <script>
         // Matrix effect script
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+// Matrix effect script
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array.from({ length: columns }).fill(0);
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array.from({ length: columns }).fill(0);
 
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#750000";
-            ctx.font = `${fontSize}px monospace`;
+function drawMatrix() {
+    // Fill the background with a white overlay to fade out old characters
+    ctx.fillStyle = "rgba(255, 255, 255, 0.05)"; // Light overlay
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drops.forEach((y, index) => {
-                const text = characters[Math.floor(Math.random() * characters.length)];
-                ctx.fillText(text, index * fontSize, y * fontSize);
-                drops[index] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
-            });
-        }
+    // Set the color and font for the falling characters
+    ctx.fillStyle = "#333"; // Dark gray for falling characters
+    ctx.font = `${fontSize}px monospace`;
 
-        setInterval(drawMatrix, 50);
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+    drops.forEach((y, index) => {
+        const text = characters[Math.floor(Math.random() * characters.length)];
+        ctx.fillText(text, index * fontSize, y * fontSize);
+        drops[index] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+    });
+}
+
+// Redraw the matrix effect at intervals
+setInterval(drawMatrix, 50);
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 
         function toggleOtherDietary() {
             const dietaryRestrictions = document.getElementById('dietary_restrictions');
